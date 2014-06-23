@@ -1,1 +1,2 @@
-d3.selectAll('.item:nth-child(3n)').text('select')
+d3.select('#chart .item:nth-child(3)')
+  .remove()
