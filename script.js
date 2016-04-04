@@ -1,19 +1,22 @@
 var width = 400,
     height = 400,
     radius = 200
-    colors = d3.scale.category20c();
+    colors = d3.scale.ordinal()
+        .range(['#595AB7','#a229e7','#D11C24','#12b663','#BD3613','#2176C7','#e0e729','#738A05']);
 
 var piedata = [
-    {
-        label: "Barot",
-        value: 10
-    },{
-        label: "Gerard",
-        value: 10
-    },{
-        label: "Jennifer",
-        value: 50
-    }
+    {   label: "Gaby",
+        value: 40 },
+    {   label: "Kim",
+        value: 50},
+    {   label: "Alison",
+        value: 50},
+    {   label: "Danielle",
+        value: 40},
+    {   label: "Julie",
+        value: 20},
+    {   label: "Mike",
+        value: 53}
 ]
 
 var pie = d3.layout.pie()
@@ -30,15 +33,27 @@ var myChart = d3.select('#chart').append('svg')
     .append('g')
     .attr('transform', 'translate('+(width-radius)+','+(height-radius)+')')
     .selectAll('path').data(pie(piedata))
-    .enter().append('path')
+    .enter().append('g')
+        .attr('class', 'slice')
+
+var slices = d3.selectAll('g.slice')
+        .append('path')
         .attr('fill', function(d, i) {
             return colors(i);
         })
         .attr('d', arc)
 
-
-
-
-
+var text = d3.selectAll('g.slice')
+    .append('text')
+    .text(function(d, i) {
+        return d.data.label;
+    })
+    .attr('text-anchor', 'middle')
+    .attr('fill', 'white')
+    .attr('transform', function(d) {
+        d.innerRadius = 0;
+        d.outerRadius = radius;
+        return 'translate('+ arc.centroid(d)+')'
+    })
 
 
